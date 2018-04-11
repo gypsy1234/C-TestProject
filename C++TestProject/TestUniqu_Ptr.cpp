@@ -3,7 +3,6 @@
 #include <memory>
 using namespace std;
 
-
 class Person {
 private:
 	string name;
@@ -14,7 +13,7 @@ public:
 	~Person() {
 		cout << name << "‚Í‰ð‘Ì‚³‚ê‚½\n";
 	}
-	string getParentName() {
+	inline string getParentName() {
 
 		if (pParent != nullptr) {
 			return pParent->name;
