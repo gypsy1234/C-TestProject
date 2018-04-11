@@ -1,21 +1,43 @@
+
+#pragma region "　■  include"
+
 #include <iostream>
 #include <string>
 #include <memory>
-using namespace std;
+#pragma endregion
+
+#pragma region "　■　Personクラス"
 
 class Person {
 private:
-	string name_;
+	std:: string name_;
 	int age_;
-	unique_ptr<Person> pParent_;
+	std::unique_ptr<Person> pParent_;
 public:
-	explicit Person(const string name, int age) : name_(name), age_(age), pParent_(nullptr){}
-	explicit Person(const string name, int age, unique_ptr<Person>&& parent) : name_(name), age_(age), pParent_(std::move(parent)){}
+	
+	//コンストラクタ
+	explicit Person(const std::string name, int age) : name_(name), age_(age), pParent_(nullptr){}
+	explicit Person(const std::string name, int age, std::unique_ptr<Person>&& parent) : name_(name), age_(age), pParent_(std::move(parent)){}
+	
+	//デストラクタ
 	~Person() {
-		cout << name_ << ":" << age_ <<  "は解体された\n";
+		std::cout << name_ << ":" << age_ <<  "は解体された\n";
 	}
 
-	inline string getParentName() {
+	//コピー・コンストラクタ
+	Person(const Person&) = delete;
+
+	//コピー代入演算子
+	Person& operator=(const Person&) = delete;
+
+	//ムーブ・コンストラクタ
+	Person(Person&&) = default;
+
+	//ムーブ代入演算子
+	Person& operator=(Person&&) = delete;
+	
+	//親の名前Getter
+	inline std::string getParentName() {
 
 		if (pParent_ != nullptr) {
 			return pParent_->name_;
@@ -25,18 +47,31 @@ public:
 	}
 };
 
+#pragma endregion
+
+//Person生成メソッド(ムーブ・コンストラクタ、ムーブ代入演算子delete)
+//Person CreatePerson() {
+//	return Person("movePerson", 0);
+//}
+
 int main() {
 
-	const string TARO = "TARO";
+	const std::string TARO = "TARO";
 	constexpr int TARO_AGE = 33;
 	constexpr int SHINTARO_AGE = 6;
 
-	unique_ptr<Person> a1 = make_unique<Person>(TARO,TARO_AGE);
+	std::unique_ptr<Person> pTaro = std::make_unique<Person>(TARO,TARO_AGE);
 
-	cout << a1->getParentName() << endl;
+	std::cout << pTaro->getParentName() << std::endl;
 
-	unique_ptr<Person> child = make_unique<Person>("Shintaro", SHINTARO_AGE, std::move(a1));
+	std::unique_ptr<Person> pShintaro = std::make_unique<Person>("Shintaro", SHINTARO_AGE, std::move(pTaro));
 
-	cout << child->getParentName() << endl;
+	std::cout << pShintaro->getParentName() << std::endl;
+
+	Person original("始祖", 0);
+	//Person clone = original; コピー代入演算delete
+	//Person clone(original); コピーコンストラクタdelete
 
 }
+
+
