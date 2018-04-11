@@ -13,6 +13,7 @@ public:
 	~Person() {
 		cout << name << "‚Í‰ð‘Ì‚³‚ê‚½\n";
 	}
+
 	inline string getParentName() {
 
 		if (pParent != nullptr) {
@@ -25,7 +26,9 @@ public:
 
 int main() {
 
-	unique_ptr<Person> a1 = make_unique<Person>("Taro");
+	const string TARO = "TARO";
+
+	unique_ptr<Person> a1 = make_unique<Person>(TARO);
 
 	cout << a1->getParentName() << endl;
 
